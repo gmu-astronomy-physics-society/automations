@@ -1,0 +1,22 @@
+name: Daily Integral Post
+
+on:
+  schedule:
+    # Runs everyday at 9:00 AM EST (13:00 UTC)
+    - cron: '0 13 * * *'
+  workflow_dispatch: # Allows you to manually trigger it anytime for testing
+
+jobs:
+  post-integral:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Daily Integral to Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                 "username": "The Daily Integral",
+                 "avatar_url": "https://dailyintegral.com/favicon.ico",
+                 "content": "☕ **Good morning! Today'\''s Daily Integral is live.**\n\nSharpen your pencil, grab your napkin, and give it a shot:\n👉 https://dailyintegral.com\n\n*Drop your hints, techniques, or scratchpad photos in the thread below!*"
+               }' \
+               ${{ secrets.DISCORD_WEBHOOK_URL }}
